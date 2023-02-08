@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Playwright;
@@ -23,28 +24,40 @@ namespace PlaywrightFrameworkTest.Automation.Common
         {
             var context = await _browser.NewContextAsync();
             Page = await context.NewPageAsync();
+            await context.Tracing.StartAsync(new()
+            {
+                Screenshots = true,
+                Snapshots = true,
+                Sources = true
+            });
         }
-        
+
         [TearDown]
         public async Task TearDown()
         {
+            await Page.Context.Tracing.StopAsync(new()
+            {
+                Path = "Newtrace.zip"
+            });
             await Page.CloseAsync();
-            
+
         }
 
-    // Run once for all our test.
-    // Create a playwright instance which provides us with a reference to our browser
-    [OneTimeSetUp]
-    public async Task SetUpGlobals()
-    {   
-        _playwright = await Playwright.CreateAsync();
-        var chromium = _playwright.Chromium;
-        _browser = await chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        // Run once for all our test.
+        // Create a playwright instance which provides us with a reference to our browser
+        [OneTimeSetUp]
+        public async Task SetUpGlobals()
         {
-            Headless = false,
-                    SlowMo = 50,
-        });
-    }
+            _playwright = await Playwright.CreateAsync();
+            var chromium = _playwright.Chromium;
+            _browser = await chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            {
+                Headless = false,
+                SlowMo = 50,
+
+
+            });
+        }
 
     }
 }

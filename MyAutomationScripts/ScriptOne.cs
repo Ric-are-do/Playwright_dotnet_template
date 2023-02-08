@@ -17,9 +17,13 @@ namespace PlaywrightFrameworkTest
         [Test]
         public async Task RunTest()
         {
+            // Start writing script from here onwards
             await Page.GotoAsync("https://playwright.dev/dotnet");
             await Page.GotoAsync("https://www.google.com/");
-            await Page.PauseAsync();
+            
+            //Extra Content 
+            // Screen recorder 
+            //await Page.Context.Tracing.StopAsync()
             
         }
     }
