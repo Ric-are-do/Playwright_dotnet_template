@@ -37,7 +37,7 @@ namespace PlaywrightFrameworkTest.Automation.Common
         {
             await Page.Context.Tracing.StopAsync(new()
             {
-                Path = "Newtrace.zip"
+                Path = "BrandNewtrace.zip"
             });
             await Page.CloseAsync();
 
